@@ -1,6 +1,9 @@
+import pathlib
+
 import pygame
-from life import GameOfLife
 from pygame.locals import *
+
+from life import GameOfLife
 from ui import UI
 
 
@@ -18,7 +21,7 @@ class GUI(UI):
         self.screen = pygame.display.set_mode(self.screen_size)
 
     def draw_lines(self) -> None:
-        """ Отрисовать сетку """
+        """Отрисовать сетку"""
         for x in range(0, self.width, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.height))
         for y in range(0, self.height, self.cell_size):
@@ -31,12 +34,20 @@ class GUI(UI):
         for x, row in enumerate(self.life.curr_generation):
             for y, val in enumerate(row):
                 if val == 1:
-                    pygame.draw.rect(self.screen, pygame.Color("green"),(y * self.cell_size + 1, x * self.cell_size + 1, self.cell_size - 1,  self.cell_size - 1))
-                else: 
-                    pygame.draw.rect(self.screen, pygame.Color("white"),(y * self.cell_size + 1, x * self.cell_size + 1, self.cell_size - 1,  self.cell_size - 1))
-    
+                    pygame.draw.rect(
+                        self.screen,
+                        pygame.Color("green"),
+                        (y * self.cell_size + 1, x * self.cell_size + 1, self.cell_size - 1, self.cell_size - 1),
+                    )
+                else:
+                    pygame.draw.rect(
+                        self.screen,
+                        pygame.Color("white"),
+                        (y * self.cell_size + 1, x * self.cell_size + 1, self.cell_size - 1, self.cell_size - 1),
+                    )
+
     def run(self) -> None:
-        """ Запустить игру """
+        """Запустить игру"""
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption("Game of Life")
@@ -58,9 +69,9 @@ class GUI(UI):
                     if event.key == K_ESCAPE or event.key == K_q:
                         running = False
                     if event.key == K_s:
-                        self.life.save("save")
+                        self.life.save(pathlib.Path("save"))
                     if event.key == K_l:
-                        self.life = self.life.from_file("save")
+                        self.life = self.life.from_file(pathlib.Path("save"))
 
                 if event.type == MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
@@ -87,6 +98,5 @@ class GUI(UI):
 
             pygame.display.flip()
             clock.tick(self.speed)
-
 
         pygame.quit()

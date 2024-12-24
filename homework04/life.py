@@ -137,7 +137,7 @@ class GameOfLife:
         """
         Не превысило ли текущее число поколений максимально допустимое.
         """
-        gen = int(self.max_generations or -1)
+        gen = float(self.max_generations or -1)
         if gen == -1:
             return False
         return self.generations >= gen
